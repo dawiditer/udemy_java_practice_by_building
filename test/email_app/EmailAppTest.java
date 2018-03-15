@@ -134,4 +134,25 @@ public class EmailAppTest {
 		assertNotEquals("Expected non empty string", 0, actual.length());
 		assertTrue("Expected correct alternate fullname", expected.equalsIgnoreCase(actual));
 	}
+	
+	// Tests for getDepartmentCode()
+	@Test
+	// covers departmentCode exists
+	public void testGetDepartmentCode_Exists() {
+		String departmentCode = "001";
+		Email email = new Email("foo", "bar", departmentCode, "123456789");
+		String actual = email.getDepartmentCode();
+		
+		assertNotEquals("Expected non empty string", 0, actual.length());
+		assertTrue("Expected correct department code", departmentCode.equalsIgnoreCase(actual));
+	}
+	@Test
+	// covers departmentCode doesnt exist
+	public void testGetDepartmentCode_NotExist() {
+		String departmentCode = "";
+		Email email = new Email("foo", "bar", departmentCode, "123456789");
+		String actual = email.getDepartmentCode();
+		
+		assertEquals("Expected empty string", 0, actual.length());
+	}
 }
