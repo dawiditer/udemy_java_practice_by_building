@@ -164,4 +164,36 @@ public class EmailTest {
 			
 			assertEquals("Expected correct mail capacity", 200, email.getMailCapacity());
 		}
+		
+		// Tests for getEmailAddress()
+		@Test
+		// covers firstname.equalsIgnoreCase(lastname) == true
+		//		  departmentCode exists
+		public void testGetEmailAddress_DeptExists() {
+			String firstname = "foo";
+			String lastname = "FOO";
+			String deptCode = "001";
+			Email email = new Email(firstname, lastname, deptCode, "123456789");
+			String expected = firstname + "." + lastname + "@" + deptCode + ".company.com";
+			String actual = email.getEmailAddress();
+			
+			assertNotEquals("Expected non-empty string", 0, actual.length());
+			assertTrue("Expected correct email address", expected.equalsIgnoreCase(actual));
+		}
+		@Test
+		// covers firstname.equalsIgnoreCase(lastname) == false
+		//		  departmentCode doesnt exist
+		// NB: an underdetermined spec exists in that there is no spec
+		// that states what to expect if the department is left blank
+		public void testGetEmailAddress_DeptNotExist() {
+			String firstname = "foo";
+			String lastname = "FOO";
+			String deptCode = "";
+			Email email = new Email(firstname, lastname, deptCode, "123456789");
+			String regex = firstname + "." + lastname + "@[a-zA-Z0-9_]+.company.com";
+			String actual = email.getEmailAddress();
+			
+			assertNotEquals("Expected non-empty string", 0, actual.length());
+			assertTrue("Expected correct email address", actual.matches(regex));
+		}
 }
