@@ -36,7 +36,7 @@ public class Email {
 	//  Represents the email address of an employee in a company.
 	//
 	// Representation Invariant
-	//	- firstname, lastname, altFirstname and altLastname are non-empty strings
+	//	- firstname, lastname, altFirstname and altLastname are non-empty case-insensitive strings
 	//	- departmentCode is an empty string if employee has no department
 	//  - password must be between 8 and 25 characters long
 	//  - mailboxCapacity > 0
@@ -83,19 +83,19 @@ public class Email {
 	 * with the same password as the same email address. Once set the email
 	 * address cannot be changed.
 	 * 
-	 * @param altFirstname non-empty non-null String
-	 * @param altLastname non-empty non-null String
+	 * @param altFirstname non-empty non-null case-insensitive String
+	 * @param altLastname non-empty non-null case-insensitive String
 	 * @return true if an alternate email address has been successfully created,
 	 *         false otherwise.
 	 */
 	public boolean createAlternateEmail(final String altFirstname, final String altLastname) {
 		throw new RuntimeException("unimplemented");
 	}	
-	/** Returns the fullname used in this email address as firstname.lastname */
+	/** Returns the case-insensitive fullname used in this email address as firstname.lastname */
 	public String getName() {
 		throw new RuntimeException("unimplemented");
 	}
-	/** Returns the alternate fullname used in this email address as altfirstname.altlastname */
+	/** Returns the case-insensitive alternate fullname used in this email address as altfirstname.altlastname */
 	public String getAltName() {
 		throw new RuntimeException("unimplemented");
 	}
@@ -118,7 +118,7 @@ public class Email {
 	/**
 	 * Changes the current password of this email to newPassword
 	 * 
-	 * @param newPassword non-empty non-null String.
+	 * @param newPassword non-empty non-null case-sensitive String.
 	 *        requires 8 <= newPassword.length() <= 25
 	 * @return true if password has been succesfully been changed
 	 * 		   to newPassword, false otherwise.
