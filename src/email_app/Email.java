@@ -95,12 +95,24 @@ public class Email {
 	public String getName() {
 		throw new RuntimeException("unimplemented");
 	}
+	/** Returns the alternate fullname used in this email address as altfirstname.altlastname */
+	public String getAltName() {
+		throw new RuntimeException("unimplemented");
+	}
 	/** Returns the department code associated with this email */
 	public String getDepartmentCode() {
 		throw new RuntimeException("unimplemented");
 	}
 	/** Returns the current mail capacity for this email */
 	public String getMailCapacity() {
+		throw new RuntimeException("unimplemented");
+	}
+	/** Returns the full string rep of this email address as  firstname.lastname@department.company.com */
+	public String getEmailAddress(){
+		throw new RuntimeException("unimplemented");
+	}
+	/** Returns the full string rep of the alternate email address if set, empty string otherwise*/
+	public String getAltEmailAddress(){
 		throw new RuntimeException("unimplemented");
 	}
 	/**
