@@ -82,6 +82,8 @@ public class Email {
 	 * The alternate email address can be used to access this Email
 	 * with the same password as the same email address. Once set the email
 	 * address cannot be changed.
+	 * The alternate email creation is unsuccessful if the alternate email 
+	 * is equal(case-insensitive) to the main email address.
 	 * 
 	 * @param altFirstname non-empty non-null case-insensitive String
 	 * @param altLastname non-empty non-null case-insensitive String
