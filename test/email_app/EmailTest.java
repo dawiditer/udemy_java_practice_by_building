@@ -258,4 +258,44 @@ public class EmailTest {
 			assertTrue("Expected change in password", passChanged);
 			assertFalse("Expected no change in password", passChanged2);
 		}
+		
+		// Tests for setMailCapacity()
+		@Test
+		// covers newMailCapacity == currentMailCapacity
+		public void testSetMailCapacity_Equal() {
+			int mailCapacity = 200;
+			Email email = new Email("foo", "bar", "001", "12345678");
+			email.setMailCapacity(mailCapacity);
+			int previousMailCapacity = email.setMailCapacity(200);
+			
+			assertNotEquals("Expected successful mail capacity change", -1, previousMailCapacity);
+			assertEquals("Expected same mail capacity", mailCapacity, email.getMailCapacity());
+			assertEquals("Expected correct previous capacity", mailCapacity, previousMailCapacity);
+		}
+		@Test
+		// covers newMailCapacity < currentMailCapacity
+		public void testSetMailCapacity_Lower() {
+			int mailCapacity = 200;
+			Email email = new Email("foo", "bar", "001", "12345678");
+			email.setMailCapacity(mailCapacity);
+			int newMailCapacity = 180;
+			int previousMailCapacity = email.setMailCapacity(newMailCapacity);
+			
+			assertNotEquals("Expected successful mail capacity change", -1, previousMailCapacity);
+			assertEquals("Expected change in capacity", newMailCapacity, email.getMailCapacity());
+			assertEquals("Expected correct previous capacity", mailCapacity, previousMailCapacity);
+		}
+		@Test
+		// covers newMailCapacity > currentMailCapacity
+		public void testSetMailCapacity_Higher() {
+			int mailCapacity = 200;
+			Email email = new Email("foo", "bar", "001", "12345678");
+			email.setMailCapacity(mailCapacity);
+			int newMailCapacity = 500;
+			int previousMailCapacity = email.setMailCapacity(newMailCapacity);
+			
+			assertNotEquals("Expected successful mail capacity change", -1, previousMailCapacity);
+			assertEquals("Expected change in capacity", newMailCapacity, email.getMailCapacity());
+			assertEquals("Expected correct previous capacity", mailCapacity, previousMailCapacity);
+		}
 }
