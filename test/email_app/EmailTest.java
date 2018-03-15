@@ -29,7 +29,7 @@ public class EmailTest {
 		//		departmentCode: exists, wasn't set during email creation
 		//	
 		//	getAltEmailAddress() -> altEmailAddress
-		//		firstname.equalsIgnoreCase(lastname): true, false
+		//		altEmailAddress: exists, hasn't been set
 		//		departmentCode: exists, wasn't set during email creation
 		//		
 		//  resetPassword(newPassword) -> boolean
@@ -195,5 +195,44 @@ public class EmailTest {
 			
 			assertNotEquals("Expected non-empty string", 0, actual.length());
 			assertTrue("Expected correct email address", actual.matches(regex));
+		}
+		
+		// Tests for getAltEmailAddress()
+		@Test
+		// covers altEmailAddress exists
+		//		  departmentCode exists
+		public void testGetAltEmailAddress_AltExists() {
+			String firstname = "foo";
+			String lastname = "bar";
+			Email email = new Email(firstname, lastname, "001", "12345678");
+			email.createAlternateEmail(lastname, firstname);
+			String expected = lastname + "." + firstname + "@001.company.com";
+			String actual = email.getAltEmailAddress();
+			
+			assertNotEquals("Expected non-empty string", 0, actual.length());
+			assertTrue("Expected correct email address", expected.equalsIgnoreCase(actual));			
+		}
+		@Test
+		// covers altEmailAddress exists
+		//		  departmentCode doesnt exist
+		public void testGetAltEmailAddress_AltExistsDeptNotExist() {
+			String firstname = "foo";
+			String lastname = "bar";
+			Email email = new Email(firstname, lastname, "", "12345678");
+			email.createAlternateEmail(lastname, firstname);
+			String regex = lastname + "." + firstname + "@[a-zA-Z0-9_]+.company.com";
+			String actual = email.getAltEmailAddress();
+			
+			assertNotEquals("Expected non-empty string", 0, actual.length());
+			assertTrue("Expected correct email address", actual.matches(regex));			
+		}
+		@Test
+		// covers altEmailAddress doesn't exist
+		//		  departmentCode exists
+		public void testGetAltEmailAddress_AltNotExist() {
+			Email email = new Email("foo", "bar", "001", "12345678");
+			String actual = email.getAltEmailAddress();
+			
+			assertEquals("Expected empty string", 0, actual.length());		
 		}
 }
