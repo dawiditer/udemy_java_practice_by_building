@@ -26,8 +26,8 @@ package email_app;
 public class Email {
 	private final String firstname;
 	private final String lastname;
-	private String altFirstname;
-	private String altLastname;
+	private String altFirstname = "";
+	private String altLastname = "";
 	private final String departmentCode;
 	private String password;
 	private int mailCapacity = 250;
@@ -57,8 +57,6 @@ public class Email {
 			) {
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.altFirstname = this.firstname;
-		this.altLastname = this.lastname;
 		this.departmentCode = departmentCode;
 		this.password = password;
 		
