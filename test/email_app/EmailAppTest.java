@@ -106,4 +106,32 @@ public class EmailAppTest {
 		assertTrue("Expected correct fullname", expected.equalsIgnoreCase(actual));
 	}
 	
+	// Tests for getAltName()
+	@Test
+	// covers altFirstname.equalsIgnoreCase(altLastname) == false
+	//		  alternate email doesn't exist
+	public void testGetAltName_NotExist() {
+		String firstname = "Sterling";
+		String lastname = "Archer";
+		Email email = new Email(firstname, lastname, "001", "12345678");
+		String altFullname = email.getAltName();
+		String fullname = email.getAltName();
+		
+		assertEquals("Expected empty string from non-existent alternate email",
+				0, altFullname.length());
+		assertFalse("Expected no alternative fullname", altFullname.equalsIgnoreCase(fullname));
+	}
+	@Test
+	// covers altFirstname.equalsIgnoreCase(altLastname) == true
+	//		  alternate email exists
+	public void testGetAltName_Exists() {
+		String firstname = "Nina";
+		Email email = new Email(firstname, firstname, "001", "12345678");
+		email.createAlternateEmail(firstname, "bar");
+		String actual = email.getAltName();
+		String expected = firstname + ".bar";
+		
+		assertNotEquals("Expected non empty string", 0, actual.length());
+		assertTrue("Expected correct alternate fullname", expected.equalsIgnoreCase(actual));
+	}
 }
