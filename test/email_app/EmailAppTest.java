@@ -155,4 +155,13 @@ public class EmailAppTest {
 		
 		assertEquals("Expected empty string", 0, actual.length());
 	}
+	
+	// Tests for getMailCapacity()
+	@Test
+	public void testGetMailCapacity() {
+		Email email = new Email("foo", "bar", "001", "123456789");
+		email.setMailCapacity(200);
+		
+		assertEquals("Expected correct mail capacity", 200, email.getMailCapacity());
+	}
 }
