@@ -120,8 +120,8 @@ public class Email {
 	 * 
 	 * @param newPassword non-empty non-null case-sensitive String.
 	 *        requires 8 <= newPassword.length() <= 25
-	 * @return true if password has been succesfully been changed
-	 * 		   to newPassword, false otherwise.
+	 * @return true if and only if password has been successfully changed
+	 * 		   to newPassword, false otherwise. 
 	 */
 	public boolean resetPassword(final String newPassword) {
 		throw new RuntimeException("unimplemented");

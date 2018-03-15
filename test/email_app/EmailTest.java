@@ -33,7 +33,7 @@ public class EmailTest {
 		//		departmentCode: exists, wasn't set during email creation
 		//		
 		//  resetPassword(newPassword) -> boolean
-		//		newPassword == current password: true, false
+		//		newPassword == currentPassword: true, false
 		//
 		//  setMailCapacity(newMailCapacity) -> boolean
 		//		newMailCapacity == current mailCapacity
@@ -234,5 +234,28 @@ public class EmailTest {
 			String actual = email.getAltEmailAddress();
 			
 			assertEquals("Expected empty string", 0, actual.length());		
+		}
+		
+		// Tests for resetPassword()
+		@Test
+		// covers newPassword == currentPassword
+		public void testResetPassword_Equal() {
+			String password = "12345678";
+			Email email = new Email("foo", "bar", "001", password);
+			boolean passChanged = email.resetPassword(password);
+			
+			assertFalse("Expected no change in password", passChanged);
+		}
+		@Test
+		// covers newPassword != currentPassword
+		public void testResetPassword_NotEqual() {
+			String currentPassword = "12345678";
+			Email email = new Email("foo", "bar", "001", currentPassword);
+			String newPassword = "87654321";
+			boolean passChanged = email.resetPassword(newPassword);
+			boolean passChanged2 = email.resetPassword(newPassword);
+			
+			assertTrue("Expected change in password", passChanged);
+			assertFalse("Expected no change in password", passChanged2);
 		}
 }
