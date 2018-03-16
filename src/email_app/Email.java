@@ -59,13 +59,12 @@ public class Email {
 	public Email(
 			final String firstname, 
 			final String lastname,
-			final String departmentCode,
-			final String password
+			final String departmentCode
 			) {
 		this.firstname = firstname.trim().toLowerCase();
 		this.lastname = lastname.trim().toLowerCase();
 		this.departmentCode = departmentCode.trim().isEmpty() ? "general" : departmentCode.toLowerCase();
-		this.password = password;
+		this.password = generateRandomPassword();
 		
 		checkRep();
 	}
