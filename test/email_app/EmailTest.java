@@ -42,42 +42,6 @@ public class EmailTest {
 		//
 		// Coverage: Exhaustive enumeration of partitions
 		
-		// Tests for createAlternateEmail()
-		@Test
-		// covers altFullname.equalsIgnoreCase(fullname) == true
-		// 		  altFirstname.equalsIgnoreCase(altLastname) == false
-		//		  alternate email doesn't exist
-		public void testCreateAlternateEmail_AltEqualsMain() {
-			String firstname = "foo";
-			String lastname = "bar";
-			String fullname = firstname + "." + lastname;
-			Email email = new Email(firstname, lastname, "001", "12345678");
-			boolean altEmailCreated = email.createAlternateEmail(firstname, lastname);
-			
-			assertTrue("Expected successful email creation", fullname.equalsIgnoreCase(email.getName()));// just to make sure the test is ok
-			assertFalse("Expected unsuccessful alternate email creation", altEmailCreated);
-			assertEquals("Expected no alternate email", 0, email.getAltEmailAddress().length());
-		}	
-		@Test
-		// covers altFullname.equalsIgnoreCase(fullname) == true
-		//		  altFullname.equalsIgnoreCase(fullname) == false
-		// 		  altFirstname.equalsIgnoreCase(altLastname) == true
-		//		  alternate email exists
-		public void testCreateAlternateEmail_AltEqualsMainExists() {
-			String firstname = "foo";
-			String lastname = "bar";
-			String fullname = firstname + "." + lastname;
-			Email email = new Email(firstname, lastname, "001", "12345678");
-			boolean altEmailCreated_1 = email.createAlternateEmail(lastname, lastname);
-			boolean altEmailCreated_2 = email.createAlternateEmail(firstname, lastname);
-			String altFullname = lastname + "." + lastname;
-			
-			assertFalse("Expected successful alternate email creation", altEmailCreated_1);
-			assertFalse("Expected unsuccessful alternate email creation", altEmailCreated_2);
-			assertTrue("Expected unchanged main email address", fullname.equalsIgnoreCase(email.getName()));
-			assertTrue("Expected unchanged alternate email", altFullname.equalsIgnoreCase(email.getAltEmailAddress()));
-		}
-		
 		//------ Observers ------//		
 		// Tests for getName()
 		@Test
@@ -236,6 +200,44 @@ public class EmailTest {
 			assertEquals("Expected empty string", 0, actual.length());		
 		}
 		
+		//------ Producers ------//
+		// Tests for createAlternateEmail()
+		@Test
+		// covers altFullname.equalsIgnoreCase(fullname) == true
+		// 		  altFirstname.equalsIgnoreCase(altLastname) == false
+		//		  alternate email doesn't exist
+		public void testCreateAlternateEmail_AltEqualsMain() {
+			String firstname = "foo";
+			String lastname = "bar";
+			Email email = new Email(firstname, lastname, "001", "12345678");
+			boolean altEmailCreated = email.createAlternateEmail(firstname, lastname);
+			String fullname = firstname + "." + lastname;
+			
+			assertTrue("Expected successful email creation", fullname.equalsIgnoreCase(email.getName()));// just to make sure the test is ok
+			assertFalse("Expected unsuccessful alternate email creation", altEmailCreated);
+			assertEquals("Expected no alternate email", 0, email.getAltEmailAddress().length());
+		}	
+		@Test
+		// covers altFullname.equalsIgnoreCase(fullname) == true
+		//		  altFullname.equalsIgnoreCase(fullname) == false
+		// 		  altFirstname.equalsIgnoreCase(altLastname) == true
+		//		  alternate email exists
+		public void testCreateAlternateEmail_AltEqualsMainExists() {
+			String firstname = "foo";
+			String lastname = "bar";
+			String fullname = firstname + "." + lastname;
+			Email email = new Email(firstname, lastname, "001", "12345678");
+			boolean altEmailCreated_1 = email.createAlternateEmail(lastname, lastname);
+			boolean altEmailCreated_2 = email.createAlternateEmail(firstname, lastname);
+			String expected = lastname + "." + lastname + "@" + email.getDepartmentCode() + ".company.com";
+			
+			assertTrue("Expected successful alternate email creation", altEmailCreated_1);
+			assertFalse("Expected unsuccessful alternate email creation", altEmailCreated_2);
+			assertTrue("Expected unchanged main email address", fullname.equalsIgnoreCase(email.getName()));
+			assertEquals("Expected unchanged alternate email", expected, email.getAltEmailAddress());
+		}
+		
+		//------ Mutators ------//
 		// Tests for resetPassword()
 		@Test
 		// covers newPassword == currentPassword

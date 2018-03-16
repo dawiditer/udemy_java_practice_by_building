@@ -90,7 +90,16 @@ public class Email {
 	 *         false otherwise.
 	 */
 	public boolean createAlternateEmail(final String altFirstname, final String altLastname) {
-		throw new RuntimeException("unimplemented");
+		assert !altFirstname.isEmpty();
+		assert !altLastname.isEmpty();
+		
+		if (this.firstname.equalsIgnoreCase(altFirstname) && this.lastname.equalsIgnoreCase(altLastname)) {
+			return false;
+		}
+		this.altFirstname = altFirstname.toLowerCase();
+		this.altLastname = altLastname.toLowerCase();
+		
+		return true;
 	}	
 	/** Returns the fullname(in lowercase) used in this email address as firstname.lastname */
 	public String getName() {
