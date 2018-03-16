@@ -91,11 +91,11 @@ public class Email {
 	public boolean createAlternateEmail(final String altFirstname, final String altLastname) {
 		throw new RuntimeException("unimplemented");
 	}	
-	/** Returns the case-insensitive fullname used in this email address as firstname.lastname */
+	/** Returns the fullname(in lowercase) used in this email address as firstname.lastname */
 	public String getName() {
 		throw new RuntimeException("unimplemented");
 	}
-	/** Returns the case-insensitive alternate fullname used in this email address as altfirstname.altlastname */
+	/** Returns the alternate fullname(in lowercase) used in this email address as altfirstname.altlastname */
 	public String getAltName() {
 		throw new RuntimeException("unimplemented");
 	}
