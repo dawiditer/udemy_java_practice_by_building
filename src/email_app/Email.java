@@ -160,7 +160,16 @@ public class Email {
 	 * 		   -1 if unsuccessful.
 	 */
 	public int setMailCapacity(final int newMailCapacity) {
-		throw new RuntimeException("unimplemented");
+		assert newMailCapacity > 0;
+		
+		if (newMailCapacity < Integer.MIN_VALUE || newMailCapacity > Integer.MAX_VALUE) {
+			return -1;
+		}
+		int prev = this.mailCapacity;
+		this.mailCapacity = newMailCapacity;
+		
+		checkRep();
+		return prev;
 	}
 	
 }
