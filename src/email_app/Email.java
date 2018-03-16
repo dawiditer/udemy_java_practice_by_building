@@ -34,7 +34,7 @@ public class Email {
 	private final String lastname;
 	private String altFirstname = "";
 	private String altLastname = "";
-	private final String departmentCode;
+	private final String department;
 	private String password;
 	private int mailCapacity = 250;
 	
@@ -43,13 +43,13 @@ public class Email {
 	//
 	// Representation Invariant
 	//	- firstname, lastname, altFirstname and altLastname are non-empty case-insensitive strings
-	//	- departmentCode is a non-empty case-insensitive string
+	//	- department is a non-empty case-insensitive string
 	//  - password must be between 8 and 25 characters long
 	//  - mailboxCapacity > 0
 	//
 	// Safety from Exposure
 	//	- All fields are private and can only be accessed via setters and getters
-	//	- firstname, lastname and departmentCode are final hence immutable 
+	//	- firstname, lastname and department are final hence immutable 
 	//    and they refer to String objects which are also immutable
 	//	- altFirstname, altLastname, password and mailCapacity refer to 
 	//	  immutable objects and are only mutated
@@ -59,11 +59,11 @@ public class Email {
 	public Email(
 			final String firstname, 
 			final String lastname,
-			final String departmentCode
+			final String department
 			) {
 		this.firstname = firstname.trim().toLowerCase();
 		this.lastname = lastname.trim().toLowerCase();
-		this.departmentCode = departmentCode.trim().isEmpty() ? "general" : departmentCode.toLowerCase();
+		this.department = department.trim().isEmpty() ? "general" : department.toLowerCase();
 		this.password = generateRandomPassword();
 		
 		checkRep();
@@ -128,25 +128,25 @@ public class Email {
 	public String getAltName() {
 		return altFirstname.isEmpty() && altLastname.isEmpty() ? "" : altFirstname + "." + altLastname;
 	}
-	/** Returns the defined department code(in lowercase) associated with this email, "general" if not defined */
-	public String getDepartmentCode() {
-		return departmentCode;
+	/** Returns the defined department(in lowercase) associated with this email, "general" if not defined */
+	public String getDepartment() {
+		return department;
 	}
 	/** Returns the current mail capacity for this email */
 	public int getMailCapacity() {
 		return mailCapacity;
 	}
-	/** Returns the full lowercase string rep of this email address as firstname.lastname@departmentcode.company.com */
+	/** Returns the full lowercase string rep of this email address as firstname.lastname@department.company.com */
 	public String getEmailAddress(){
 		String localPart = this.getName();
-		String domain = departmentCode + ".company.com";
+		String domain = department + ".company.com";
 		
 		return localPart + "@" + domain;
 	}
 	/** Returns the full lowercase string rep of the alternate email address if set, empty string otherwise*/
 	public String getAltEmailAddress(){
 		String localPart = this.getAltName();
-		String domain = departmentCode + ".company.com";
+		String domain = department + ".company.com";
 		
 		return localPart.isEmpty() ? "" : localPart + "@" + domain;
 	}

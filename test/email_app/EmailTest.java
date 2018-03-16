@@ -19,18 +19,18 @@ public class EmailTest {
 		//		altFirstname.equalsIgnoreCase(altLastname): true, false
 		//		alternate email: exists, doesn't exist
 		//
-		//	getDepartmentCode() -> departmentCode
-		//		departmentCode: exists, wasn't set during email creation
+		//	getDepartment() -> department
+		//		department: exists, wasn't set during email creation
 		//
 		//  getMailCapacity() -> mailCapacity
 		//	
 		//	getEmailAddress() -> emailAddress
 		//		firstname.equalsIgnoreCase(lastname): true, false
-		//		departmentCode: exists, wasn't set during email creation
+		//		department: exists, wasn't set during email creation
 		//	
 		//	getAltEmailAddress() -> altEmailAddress
 		//		altEmailAddress: exists, hasn't been set
-		//		departmentCode: exists, wasn't set during email creation
+		//		department: exists, wasn't set during email creation
 		//		
 		//  resetPassword(newPassword) -> boolean
 		//		newPassword == currentPassword: true, false
@@ -100,23 +100,23 @@ public class EmailTest {
 			assertTrue("Expected correct alternate fullname", expected.equalsIgnoreCase(actual));
 		}
 		
-		// Tests for getDepartmentCode()
+		// Tests for getDepartment()
 		@Test
-		// covers departmentCode exists
-		public void testGetDepartmentCode_Exists() {
-			String departmentCode = "001";
-			Email email = new Email("foo", "bar", departmentCode);
-			String actual = email.getDepartmentCode();
+		// covers department exists
+		public void testGetDepartment_Exists() {
+			String department = "001";
+			Email email = new Email("foo", "bar", department);
+			String actual = email.getDepartment();
 			
 			assertNotEquals("Expected non empty string", 0, actual.length());
-			assertTrue("Expected correct department code", departmentCode.equalsIgnoreCase(actual));
+			assertTrue("Expected correct department", department.equalsIgnoreCase(actual));
 		}
 		@Test
-		// covers departmentCode not defined during creation
-		public void testGetDepartmentCode_NotExist() {
-			String departmentCode = "";
-			Email email = new Email("foo", "bar", departmentCode);
-			String actual = email.getDepartmentCode();
+		// covers department not defined during creation
+		public void testGetDepartment_NotExist() {
+			String department = "";
+			Email email = new Email("foo", "bar", department);
+			String actual = email.getDepartment();
 			
 			assertNotEquals("Expected non-empty string", 0, actual.length());
 			assertEquals("Expected a department", "general", actual);
@@ -134,13 +134,13 @@ public class EmailTest {
 		// Tests for getEmailAddress()
 		@Test
 		// covers firstname.equalsIgnoreCase(lastname) == true
-		//		  departmentCode exists
+		//		  department exists
 		public void testGetEmailAddress_DeptExists() {
 			String firstname = "foo";
 			String lastname = "FOO";
-			String deptCode = "001";
-			Email email = new Email(firstname, lastname, deptCode);
-			String expected = firstname + "." + lastname + "@" + deptCode + ".company.com";
+			String dept = "001";
+			Email email = new Email(firstname, lastname, dept);
+			String expected = firstname + "." + lastname + "@" + dept + ".company.com";
 			String actual = email.getEmailAddress();
 			
 			assertNotEquals("Expected non-empty string", 0, actual.length());
@@ -148,12 +148,12 @@ public class EmailTest {
 		}
 		@Test
 		// covers firstname.equalsIgnoreCase(lastname) == false
-		//		  departmentCode doesnt exist
+		//		  department doesnt exist
 		public void testGetEmailAddress_DeptNotExist() {
 			String firstname = "foo";
 			String lastname = "FOO";
-			String deptCode = "";
-			Email email = new Email(firstname, lastname, deptCode);
+			String dept = "";
+			Email email = new Email(firstname, lastname, dept);
 			String expected = firstname.toLowerCase() + "." + lastname.toLowerCase() + "@general.company.com";
 			String actual = email.getEmailAddress();
 			
@@ -164,7 +164,7 @@ public class EmailTest {
 		// Tests for getAltEmailAddress()
 		@Test
 		// covers altEmailAddress exists
-		//		  departmentCode exists
+		//		  department exists
 		public void testGetAltEmailAddress_AltExists() {
 			String firstname = "foo";
 			String lastname = "bar";
@@ -178,7 +178,7 @@ public class EmailTest {
 		}
 		@Test
 		// covers altEmailAddress exists
-		//		  departmentCode doesnt exist
+		//		  department doesnt exist
 		public void testGetAltEmailAddress_AltExistsDeptNotExist() {
 			String firstname = "foo";
 			String lastname = "bar";
@@ -192,7 +192,7 @@ public class EmailTest {
 		}
 		@Test
 		// covers altEmailAddress doesn't exist
-		//		  departmentCode exists
+		//		  department exists
 		public void testGetAltEmailAddress_AltNotExist() {
 			Email email = new Email("foo", "bar", "001");
 			String actual = email.getAltEmailAddress();
@@ -229,7 +229,7 @@ public class EmailTest {
 			Email email = new Email(firstname, lastname, "001");
 			boolean altEmailCreated_1 = email.createAlternateEmail(lastname, lastname);
 			boolean altEmailCreated_2 = email.createAlternateEmail(firstname, lastname);
-			String expected = lastname + "." + lastname + "@" + email.getDepartmentCode() + ".company.com";
+			String expected = lastname + "." + lastname + "@" + email.getDepartment() + ".company.com";
 			
 			assertTrue("Expected successful alternate email creation", altEmailCreated_1);
 			assertFalse("Expected unsuccessful alternate email creation", altEmailCreated_2);
