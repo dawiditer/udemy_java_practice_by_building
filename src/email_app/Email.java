@@ -99,6 +99,7 @@ public class Email {
 		this.altFirstname = altFirstname.toLowerCase();
 		this.altLastname = altLastname.toLowerCase();
 		
+		checkRep();
 		return true;
 	}	
 	/** Returns the fullname(in lowercase) used in this email address as firstname.lastname */
@@ -140,7 +141,16 @@ public class Email {
 	 * 		   to newPassword, false otherwise. 
 	 */
 	public boolean resetPassword(final String newPassword) {
-		throw new RuntimeException("unimplemented");
+		assert newPassword.length() <= 8 && newPassword.length() <= 25;
+		
+		if (newPassword == this.password) {
+			return false;
+		}
+		
+		this.password = newPassword;
+		
+		checkRep();
+		return true;
 	}
 	/**
 	 * Changes the current mail capacity to new capacity
