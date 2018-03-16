@@ -49,7 +49,7 @@ public class EmailTest {
 		//		  alternate email doesn't exist
 		public void testGetName_Equal() {
 			String firstname = "nina";
-			Email email = new Email(firstname, firstname, "001", "12345678");
+			Email email = new Email(firstname, firstname, "001");
 			String expected = firstname + "." + firstname;
 			String actual = email.getName();
 			
@@ -62,7 +62,7 @@ public class EmailTest {
 		public void testGetName_NotEqual() {
 			String firstname = "Sterling";
 			String lastname = "Archer";
-			Email email = new Email(firstname, lastname, "001", "12345678");
+			Email email = new Email(firstname, lastname, "001");
 			email.createAlternateEmail("foo", "bar");
 			String expected = firstname + "." + lastname;
 			String actual = email.getName();
@@ -78,7 +78,7 @@ public class EmailTest {
 		public void testGetAltName_NotExist() {
 			String firstname = "Sterling";
 			String lastname = "Archer";
-			Email email = new Email(firstname, lastname, "001", "12345678");
+			Email email = new Email(firstname, lastname, "001");
 			String altFullname = email.getAltName();
 			String fullname = email.getName();
 			
@@ -91,7 +91,7 @@ public class EmailTest {
 		//		  alternate email exists
 		public void testGetAltName_Exists() {
 			String firstname = "Nina";
-			Email email = new Email(firstname, firstname, "001", "12345678");
+			Email email = new Email(firstname, firstname, "001");
 			email.createAlternateEmail(firstname, "bar");
 			String actual = email.getAltName();
 			String expected = firstname + ".bar";
@@ -105,7 +105,7 @@ public class EmailTest {
 		// covers departmentCode exists
 		public void testGetDepartmentCode_Exists() {
 			String departmentCode = "001";
-			Email email = new Email("foo", "bar", departmentCode, "123456789");
+			Email email = new Email("foo", "bar", departmentCode);
 			String actual = email.getDepartmentCode();
 			
 			assertNotEquals("Expected non empty string", 0, actual.length());
@@ -115,7 +115,7 @@ public class EmailTest {
 		// covers departmentCode not defined during creation
 		public void testGetDepartmentCode_NotExist() {
 			String departmentCode = "";
-			Email email = new Email("foo", "bar", departmentCode, "123456789");
+			Email email = new Email("foo", "bar", departmentCode);
 			String actual = email.getDepartmentCode();
 			
 			assertNotEquals("Expected non-empty string", 0, actual.length());
@@ -125,7 +125,7 @@ public class EmailTest {
 		// Tests for getMailCapacity()
 		@Test
 		public void testGetMailCapacity() {
-			Email email = new Email("foo", "bar", "001", "123456789");
+			Email email = new Email("foo", "bar", "001");
 			email.setMailCapacity(200);
 			
 			assertEquals("Expected correct mail capacity", 200, email.getMailCapacity());
@@ -139,7 +139,7 @@ public class EmailTest {
 			String firstname = "foo";
 			String lastname = "FOO";
 			String deptCode = "001";
-			Email email = new Email(firstname, lastname, deptCode, "123456789");
+			Email email = new Email(firstname, lastname, deptCode);
 			String expected = firstname + "." + lastname + "@" + deptCode + ".company.com";
 			String actual = email.getEmailAddress();
 			
@@ -153,7 +153,7 @@ public class EmailTest {
 			String firstname = "foo";
 			String lastname = "FOO";
 			String deptCode = "";
-			Email email = new Email(firstname, lastname, deptCode, "123456789");
+			Email email = new Email(firstname, lastname, deptCode);
 			String expected = firstname.toLowerCase() + "." + lastname.toLowerCase() + "@general.company.com";
 			String actual = email.getEmailAddress();
 			
@@ -168,7 +168,7 @@ public class EmailTest {
 		public void testGetAltEmailAddress_AltExists() {
 			String firstname = "foo";
 			String lastname = "bar";
-			Email email = new Email(firstname, lastname, "001", "12345678");
+			Email email = new Email(firstname, lastname, "001");
 			email.createAlternateEmail(lastname, firstname);
 			String expected = lastname + "." + firstname + "@001.company.com";
 			String actual = email.getAltEmailAddress();
@@ -182,7 +182,7 @@ public class EmailTest {
 		public void testGetAltEmailAddress_AltExistsDeptNotExist() {
 			String firstname = "foo";
 			String lastname = "bar";
-			Email email = new Email(firstname, lastname, "", "12345678");
+			Email email = new Email(firstname, lastname, "");
 			email.createAlternateEmail(lastname, firstname);
 			String expected = lastname + "." + firstname + "@general.company.com";
 			String actual = email.getAltEmailAddress();
@@ -194,7 +194,7 @@ public class EmailTest {
 		// covers altEmailAddress doesn't exist
 		//		  departmentCode exists
 		public void testGetAltEmailAddress_AltNotExist() {
-			Email email = new Email("foo", "bar", "001", "12345678");
+			Email email = new Email("foo", "bar", "001");
 			String actual = email.getAltEmailAddress();
 			
 			assertEquals("Expected empty string", 0, actual.length());		
@@ -209,7 +209,7 @@ public class EmailTest {
 		public void testCreateAlternateEmail_AltEqualsMain() {
 			String firstname = "foo";
 			String lastname = "bar";
-			Email email = new Email(firstname, lastname, "001", "12345678");
+			Email email = new Email(firstname, lastname, "001");
 			boolean altEmailCreated = email.createAlternateEmail(firstname, lastname);
 			String fullname = firstname + "." + lastname;
 			
@@ -226,7 +226,7 @@ public class EmailTest {
 			String firstname = "foo";
 			String lastname = "bar";
 			String fullname = firstname + "." + lastname;
-			Email email = new Email(firstname, lastname, "001", "12345678");
+			Email email = new Email(firstname, lastname, "001");
 			boolean altEmailCreated_1 = email.createAlternateEmail(lastname, lastname);
 			boolean altEmailCreated_2 = email.createAlternateEmail(firstname, lastname);
 			String expected = lastname + "." + lastname + "@" + email.getDepartmentCode() + ".company.com";
@@ -243,7 +243,8 @@ public class EmailTest {
 		// covers newPassword == currentPassword
 		public void testResetPassword_Equal() {
 			String password = "12345678";
-			Email email = new Email("foo", "bar", "001", password);
+			Email email = new Email("foo", "bar", "001");
+			email.resetPassword(password);
 			boolean passChanged = email.resetPassword(password);
 			
 			assertFalse("Expected no change in password", passChanged);
@@ -251,14 +252,11 @@ public class EmailTest {
 		@Test
 		// covers newPassword != currentPassword
 		public void testResetPassword_NotEqual() {
-			String currentPassword = "12345678";
-			Email email = new Email("foo", "bar", "001", currentPassword);
+			Email email = new Email("foo", "bar", "001");
 			String newPassword = "87654321";
 			boolean passChanged = email.resetPassword(newPassword);
-			boolean passChanged2 = email.resetPassword(newPassword);
 			
 			assertTrue("Expected change in password", passChanged);
-			assertFalse("Expected no change in password", passChanged2);
 		}
 		
 		// Tests for setMailCapacity()
@@ -266,7 +264,7 @@ public class EmailTest {
 		// covers newMailCapacity == currentMailCapacity
 		public void testSetMailCapacity_Equal() {
 			int mailCapacity = 200;
-			Email email = new Email("foo", "bar", "001", "12345678");
+			Email email = new Email("foo", "bar", "001");
 			email.setMailCapacity(mailCapacity);
 			int previousMailCapacity = email.setMailCapacity(200);
 			
@@ -278,7 +276,7 @@ public class EmailTest {
 		// covers newMailCapacity < currentMailCapacity
 		public void testSetMailCapacity_Lower() {
 			int mailCapacity = 200;
-			Email email = new Email("foo", "bar", "001", "12345678");
+			Email email = new Email("foo", "bar", "001");
 			email.setMailCapacity(mailCapacity);
 			int newMailCapacity = 180;
 			int previousMailCapacity = email.setMailCapacity(newMailCapacity);
@@ -291,7 +289,7 @@ public class EmailTest {
 		// covers newMailCapacity > currentMailCapacity
 		public void testSetMailCapacity_Higher() {
 			int mailCapacity = 200;
-			Email email = new Email("foo", "bar", "001", "12345678");
+			Email email = new Email("foo", "bar", "001");
 			email.setMailCapacity(mailCapacity);
 			int newMailCapacity = 500;
 			int previousMailCapacity = email.setMailCapacity(newMailCapacity);
