@@ -1,7 +1,8 @@
 package email_app;
 /**
  * The {@code Email} class represents an employee's email address
- * belonging to a specific company and an optional department.
+ * belonging to a specific company and an optional department. If no department
+ * is defined, "general" is set as the default department.
  * <p>
  * An email has the following syntax: 
  * <blockquote><pre>
@@ -37,7 +38,7 @@ public class Email {
 	//
 	// Representation Invariant
 	//	- firstname, lastname, altFirstname and altLastname are non-empty case-insensitive strings
-	//	- departmentCode is an empty string if employee has no department
+	//	- departmentCode is a non-empty case-insensitive string
 	//  - password must be between 8 and 25 characters long
 	//  - mailboxCapacity > 0
 	//
@@ -55,17 +56,17 @@ public class Email {
 			final String departmentCode,
 			final String password
 			) {
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.departmentCode = departmentCode;
+		this.firstname = firstname.trim().toLowerCase();
+		this.lastname = lastname.trim().toLowerCase();
+		this.departmentCode = departmentCode.trim().isEmpty() ? "general" : departmentCode.toLowerCase();
 		this.password = password;
 		
 		checkRep();
 	}
 	
 	private void checkRep() {
-		assert firstname.length() > 0 && lastname.length() > 0;
-		assert altFirstname.length() > 0 && altLastname.length() > 0;
+		assert !firstname.isEmpty() && !lastname.isEmpty();
+		assert !altFirstname.isEmpty() && !altLastname.isEmpty();
 		assert 8 <= password.length() && password.length() <= 25;
 		assert mailCapacity > 0;
 	}
@@ -93,27 +94,33 @@ public class Email {
 	}	
 	/** Returns the fullname(in lowercase) used in this email address as firstname.lastname */
 	public String getName() {
-		throw new RuntimeException("unimplemented");
+		return this.firstname + "." + this.lastname;
 	}
-	/** Returns the alternate fullname(in lowercase) used in this email address as altfirstname.altlastname */
+	/** Returns the alternate fullname(in lowercase) as altfirstname.altlastname if defined, "" otherwise */
 	public String getAltName() {
-		throw new RuntimeException("unimplemented");
+		return altFirstname.isEmpty() && altLastname.isEmpty() ? "" : altFirstname + "." + altLastname;
 	}
-	/** Returns the department code associated with this email */
+	/** Returns the defined department code(in lowercase) associated with this email, "general" if not defined */
 	public String getDepartmentCode() {
-		throw new RuntimeException("unimplemented");
+		return departmentCode;
 	}
 	/** Returns the current mail capacity for this email */
-	public String getMailCapacity() {
-		throw new RuntimeException("unimplemented");
+	public int getMailCapacity() {
+		return mailCapacity;
 	}
-	/** Returns the full string rep of this email address as  firstname.lastname@department.company.com */
+	/** Returns the full lowercase string rep of this email address as firstname.lastname@departmentcode.company.com */
 	public String getEmailAddress(){
-		throw new RuntimeException("unimplemented");
+		String localPart = this.getName();
+		String domain = departmentCode + ".company.com";
+		
+		return localPart + "@" + domain;
 	}
-	/** Returns the full string rep of the alternate email address if set, empty string otherwise*/
+	/** Returns the full lowercase string rep of the alternate email address if set, empty string otherwise*/
 	public String getAltEmailAddress(){
-		throw new RuntimeException("unimplemented");
+		String localPart = this.getAltName();
+		String domain = departmentCode + ".company.com";
+		
+		return localPart.isEmpty() ? "" : localPart + "@" + domain;
 	}
 	/**
 	 * Changes the current password of this email to newPassword
