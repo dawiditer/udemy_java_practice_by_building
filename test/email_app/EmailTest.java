@@ -300,4 +300,12 @@ public class EmailTest {
 			assertEquals("Expected change in capacity", newMailCapacity, email.getMailCapacity());
 			assertEquals("Expected correct previous capacity", mailCapacity, previousMailCapacity);
 		}
+
+		// generateRandomPassword()
+		@Test
+		public void testGenerateRandomPassword() {
+			for (int start = 0, end = 9; start < end; ++start) {
+				System.out.println(Email.generateRandomPassword());
+			}
+		}
 }

@@ -1,4 +1,9 @@
 package email_app;
+
+import java.security.SecureRandom;
+import java.util.Locale;
+import java.util.Random;
+
 /**
  * The {@code Email} class represents an employee's email address
  * belonging to a specific company and an optional department. If no department
@@ -50,6 +55,7 @@ public class Email {
 	//	  immutable objects and are only mutated
 	//	  via setter methods.
 	
+	// TODO: password encryption
 	public Email(
 			final String firstname, 
 			final String lastname,
@@ -72,8 +78,21 @@ public class Email {
 	}
 	
 	/** Returns a randomly generated password for accessing this email */
-	private String generateRandomPassword() {
-		throw new RuntimeException("unimplemented");
+	// TODO: make private. Made public for testing
+	public static String generateRandomPassword() {
+		final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		final String lower = upper.toLowerCase(Locale.ROOT);
+		final String digits = "0123456789";
+		final String alphanum = upper + lower + digits;
+		final Random random = new SecureRandom();
+		
+		final char[] symbols = alphanum.toCharArray();
+		final char[] buffer = new char[symbols.length];
+		for (int index = 0; index < 25; index++) {
+			buffer[index] = symbols[random.nextInt(symbols.length)];
+		}
+		
+		return new String(buffer);
 	}
 	/**
 	 * Defines an alternate email address.
