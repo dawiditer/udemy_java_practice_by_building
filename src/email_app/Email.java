@@ -95,12 +95,12 @@ public class Email {
 	}
 	/**
 	 * Defines an alternate email address.
-	 * 
+	 * <p>
 	 * The alternate email address can be used to access this Email
 	 * with the same password as the same email address. Once set the email
 	 * address cannot be changed.
 	 * The alternate email creation is unsuccessful if the alternate email 
-	 * is equal(case-insensitive) to the main email address.
+	 * is equal(case-insensitive) to the main email address.</p>
 	 * 
 	 * @param altFirstname non-empty non-null case-insensitive String
 	 * @param altLastname non-empty non-null case-insensitive String
@@ -190,4 +190,26 @@ public class Email {
 		return prev;
 	}
 	
+	/**
+	 * Returns a string representation of this Email
+	 * <p>
+	 * The object is represented using key-value pairs, similar to:
+	 * <blockquote>
+	 * email: this.getEmailAddress(),
+	 * alternate: this.getAltEmailAddress(),
+	 * department: this.getDepartment(),
+	 * mailCapacity: this.getMailCapacity()
+	 * </blockquote></p>
+	 * <p>
+	 * Exactly one space( ) must exist between {@code key:} and {@code value},
+	 * {@code key:value} pairs must be separated by a **{@code ,}** and may be followed 
+	 * by any whitespace character</p>
+	 * 
+	 */
+	@Override public String toString() {
+		return "email: " + this.getEmailAddress() + ","
+				+ "alternate: " + this.getAltEmailAddress() + ","
+				+ "department: " + this.getDepartment() + ","
+				+ "mailCapacity: " + this.getMailCapacity();
+	}
 }

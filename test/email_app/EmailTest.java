@@ -20,17 +20,17 @@ public class EmailTest {
 		//		alternate email: exists, doesn't exist
 		//
 		//	getDepartment() -> department
-		//		department: exists, wasn't set during email creation
+		//		department: default, specified during email creation
 		//
 		//  getMailCapacity() -> mailCapacity
 		//	
 		//	getEmailAddress() -> emailAddress
 		//		firstname.equalsIgnoreCase(lastname): true, false
-		//		department: exists, wasn't set during email creation
+		//		department: default, specified during email creation
 		//	
 		//	getAltEmailAddress() -> altEmailAddress
 		//		altEmailAddress: exists, hasn't been set
-		//		department: exists, wasn't set during email creation
+		//		department: default, specified during email creation
 		//		
 		//  resetPassword(newPassword) -> boolean
 		//		newPassword == currentPassword: true, false
@@ -40,6 +40,11 @@ public class EmailTest {
 		//		newMailCapacity < current mailCapacity
 		//		newMailCapacity > current mailCapacity
 		//
+		//	toString() -> String
+		//		alternate email: exists, doesn't exist
+		//		department: default, specified during email creation
+		//		mailCapacity: default, changed
+		//		
 		// Coverage: Exhaustive enumeration of partitions
 		
 		//------ Observers ------//		
@@ -102,8 +107,8 @@ public class EmailTest {
 		
 		// Tests for getDepartment()
 		@Test
-		// covers department exists
-		public void testGetDepartment_Exists() {
+		// covers default department 
+		public void testGetDepartment_Specified() {
 			String department = "001";
 			Email email = new Email("foo", "bar", department);
 			String actual = email.getDepartment();
@@ -112,8 +117,8 @@ public class EmailTest {
 			assertTrue("Expected correct department", department.equalsIgnoreCase(actual));
 		}
 		@Test
-		// covers department not defined during creation
-		public void testGetDepartment_NotExist() {
+		// covers default department
+		public void testGetDepartment_Default() {
 			String department = "";
 			Email email = new Email("foo", "bar", department);
 			String actual = email.getDepartment();
@@ -134,8 +139,8 @@ public class EmailTest {
 		// Tests for getEmailAddress()
 		@Test
 		// covers firstname.equalsIgnoreCase(lastname) == true
-		//		  department exists
-		public void testGetEmailAddress_DeptExists() {
+		//		  default department
+		public void testGetEmailAddress_DeptDefault() {
 			String firstname = "foo";
 			String lastname = "FOO";
 			String dept = "001";
@@ -148,8 +153,8 @@ public class EmailTest {
 		}
 		@Test
 		// covers firstname.equalsIgnoreCase(lastname) == false
-		//		  department doesnt exist
-		public void testGetEmailAddress_DeptNotExist() {
+		//		  specified department
+		public void testGetEmailAddress_DeptSpecifiedNotExist() {
 			String firstname = "foo";
 			String lastname = "FOO";
 			String dept = "";
@@ -164,7 +169,7 @@ public class EmailTest {
 		// Tests for getAltEmailAddress()
 		@Test
 		// covers altEmailAddress exists
-		//		  department exists
+		//		  default department
 		public void testGetAltEmailAddress_AltExists() {
 			String firstname = "foo";
 			String lastname = "bar";
@@ -178,8 +183,8 @@ public class EmailTest {
 		}
 		@Test
 		// covers altEmailAddress exists
-		//		  department doesnt exist
-		public void testGetAltEmailAddress_AltExistsDeptNotExist() {
+		//		  specified department
+		public void testGetAltEmailAddress_AltExistsDeptSpecified() {
 			String firstname = "foo";
 			String lastname = "bar";
 			Email email = new Email(firstname, lastname, "");
@@ -192,7 +197,7 @@ public class EmailTest {
 		}
 		@Test
 		// covers altEmailAddress doesn't exist
-		//		  department exists
+		//		  default department
 		public void testGetAltEmailAddress_AltNotExist() {
 			Email email = new Email("foo", "bar", "001");
 			String actual = email.getAltEmailAddress();
@@ -298,7 +303,55 @@ public class EmailTest {
 			assertEquals("Expected change in capacity", newMailCapacity, email.getMailCapacity());
 			assertEquals("Expected correct previous capacity", mailCapacity, previousMailCapacity);
 		}
+		
+		// Tests for toString()
+		@Test
+		// covers alternate email doesn't exists,
+		//		  default department,
+		//		  default mailCapacity
+		public void testToString_AltNotExistCapacityDeptDefault() {
+			Email email = new Email("mike", "dean", "");
+			String actual = email.toString();
+			
+			String emailLine = "email: " + email.getEmailAddress();
+			String altEmailLine = "alternate: " + email.getAltEmailAddress();
+			String deptLine = "department: " + email.getDepartment();
+			String capacityLine = "mailCapacity: " + email.getMailCapacity();
+			String separator = ",(//s)*";
+			String regex = emailLine + separator
+					+ altEmailLine + separator
+					+ deptLine + separator
+					+ capacityLine;
+			
+			assertFalse("Expected a non-empty string", actual.isEmpty());
+			assertTrue("Expected correct format", actual.matches(regex));
+		}
 
+		@Test
+		// covers alternate email exists,
+		//		  specified department,
+		//		  mailCapacity changed
+		public void testToString_AltExistsCapacityChangedDeptSpecified() {
+			Email email = new Email("mike", "dean", "Accounts");
+			email.createAlternateEmail("dean", "mike");
+			email.setMailCapacity(email.getMailCapacity() + 200);
+			String actual = email.toString();
+			
+			String emailLine = "email: " + email.getEmailAddress();
+			String altEmailLine = "alternate: " + email.getAltEmailAddress();
+			String deptLine = "department: " + email.getDepartment();
+			String capacityLine = "mailCapacity: " + email.getMailCapacity();
+			String separator = ",(//s)*";
+			String regex = emailLine + separator
+					+ altEmailLine + separator
+					+ deptLine + separator
+					+ capacityLine;
+			
+			assertFalse("Expected a non-empty string", actual.isEmpty());
+			assertTrue("Expected correct format", actual.matches(regex));
+		}
+		
+		
 		// generateRandomPassword()
 		@Test
 		public void testGenerateRandomPassword() {
